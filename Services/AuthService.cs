@@ -27,7 +27,7 @@ namespace AIM.Services;
         {
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
-            if (user is null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            if (user is null || user.Email != loginDto.Email || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 return new AuthServiceResponseDto
                 {
@@ -44,6 +44,7 @@ namespace AIM.Services;
                 new Claim("JWTID", Guid.NewGuid().ToString()),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
@@ -147,7 +148,7 @@ namespace AIM.Services;
 
             await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
 
-            return new MakeAdminOwnerResponseDto()
+            return new MakeAdminOwnerResponseDto
             {
                 IsSucceed = true,
                 Message = "User is now an OWNER"
