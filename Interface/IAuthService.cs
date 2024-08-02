@@ -6,9 +6,9 @@ namespace AIM.Interface;
 public interface IAuthService
 {
     Task<AuthServiceResponseDto> SeedRolesAsync();
-    Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto);
+    Task<RegisterAuthResponseDto> RegisterAsync(RegisterDto registerDto);
     Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto);
-    Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto);
-    Task<AuthServiceResponseDto> MakeOwnerAsync(UpdatePermissionDto updatePermissionDto);
+    Task<MakeAdminOwnerResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto);
+    Task<MakeAdminOwnerResponseDto> MakeOwnerAsync(UpdatePermissionDto updatePermissionDto);
     Task<RefreshAuthResponseDto> RefreshTokenAsync(TokenRefreshDto tokenRefreshDto);
 }

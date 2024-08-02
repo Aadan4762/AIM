@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240801181222_InitialCreate")]
+    [Migration("20240802061124_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,10 @@ namespace AIM.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("EmployeeNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -67,6 +71,10 @@ namespace AIM.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
@@ -125,19 +133,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3dcc40f6-843c-401a-9272-f79280fe6ac3",
+                            Id = "029af3b1-6ac7-43ba-a747-59144c0b5b4f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "38f89f98-da14-49d0-8f9a-340449041e1f",
+                            Id = "4bcaba51-8fad-43ed-ab53-17f9b3d1b50b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "57d3c359-27a3-43d6-add8-cdf153af9483",
+                            Id = "09e3f467-5af2-47ec-806e-7a41dd1d6cb2",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });

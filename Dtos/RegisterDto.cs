@@ -15,6 +15,12 @@ public class RegisterDto
 
     [Required(ErrorMessage = "Email is required")]
     public string Email { get; set; }
+    
+    [Required(ErrorMessage = "Phone number is required")]
+    public string Phone { get; set; }
+    
+    [Required(ErrorMessage = "Employee number is required")]
+    public string EmployeeNumber { get; set; }
 
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }

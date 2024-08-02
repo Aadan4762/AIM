@@ -110,13 +110,13 @@ namespace AIM.Services;
         }
         
 
-        public async Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
+        public async Task<MakeAdminOwnerResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
         {
             var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
 
             if (user is null)
             {
-                return new AuthServiceResponseDto
+                return new MakeAdminOwnerResponseDto
                 {
                     IsSucceed = false,
                     Message = "Invalid User name"
@@ -125,20 +125,20 @@ namespace AIM.Services;
 
             await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
 
-            return new AuthServiceResponseDto
+            return new MakeAdminOwnerResponseDto()
             {
                 IsSucceed = true,
                 Message = "User is now an ADMIN"
             };
         }
 
-        public async Task<AuthServiceResponseDto> MakeOwnerAsync(UpdatePermissionDto updatePermissionDto)
+        public async Task<MakeAdminOwnerResponseDto> MakeOwnerAsync(UpdatePermissionDto updatePermissionDto)
         {
             var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
 
             if (user is null)
             {
-                return new AuthServiceResponseDto
+                return new MakeAdminOwnerResponseDto()
                 {
                     IsSucceed = false,
                     Message = "Invalid User name"
@@ -147,20 +147,20 @@ namespace AIM.Services;
 
             await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
 
-            return new AuthServiceResponseDto
+            return new MakeAdminOwnerResponseDto()
             {
                 IsSucceed = true,
                 Message = "User is now an OWNER"
             };
         }
 
-        public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
+        public async Task<RegisterAuthResponseDto> RegisterAsync(RegisterDto registerDto)
         {
             var isExistsUser = await _userManager.FindByNameAsync(registerDto.UserName);
 
             if (isExistsUser != null)
             {
-                return new AuthServiceResponseDto
+                return new RegisterAuthResponseDto()
                 {
                     IsSucceed = false,
                     Message = "UserName Already Exists"
@@ -173,6 +173,8 @@ namespace AIM.Services;
                 LastName = registerDto.LastName,
                 Email = registerDto.Email,
                 UserName = registerDto.UserName,
+                Phone = registerDto.Phone,
+                EmployeeNumber = registerDto.EmployeeNumber,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
 
@@ -181,7 +183,7 @@ namespace AIM.Services;
             if (!createUserResult.Succeeded)
             {
                 var errorString = "User Creation Failed Because: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description));
-                return new AuthServiceResponseDto
+                return new RegisterAuthResponseDto
                 {
                     IsSucceed = false,
                     Message = errorString
@@ -191,7 +193,7 @@ namespace AIM.Services;
             // Add a Default USER Role to all users
             await _userManager.AddToRoleAsync(newUser, StaticUserRoles.USER);
 
-            return new AuthServiceResponseDto
+            return new RegisterAuthResponseDto
             {
                 IsSucceed = true,
                 Message = "User Created Successfully"

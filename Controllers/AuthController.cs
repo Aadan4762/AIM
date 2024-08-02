@@ -56,7 +56,7 @@ namespace AIM.Controllers;
         }
         
         //generate access token
-        [HttpPost("refresh-token")]
+        [HttpPost("generate-another-access-token")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenRefreshDto tokenRefreshDto)
         {
             if (tokenRefreshDto == null || string.IsNullOrEmpty(tokenRefreshDto.RefreshToken))

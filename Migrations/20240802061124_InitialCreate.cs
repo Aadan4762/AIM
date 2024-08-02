@@ -46,6 +46,10 @@ namespace AIM.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Phone = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmployeeNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
@@ -207,9 +211,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "38f89f98-da14-49d0-8f9a-340449041e1f", null, "Admin", "ADMIN" },
-                    { "3dcc40f6-843c-401a-9272-f79280fe6ac3", null, "User", "USER" },
-                    { "57d3c359-27a3-43d6-add8-cdf153af9483", null, "Owner", "OWNER" }
+                    { "029af3b1-6ac7-43ba-a747-59144c0b5b4f", null, "User", "USER" },
+                    { "09e3f467-5af2-47ec-806e-7a41dd1d6cb2", null, "Owner", "OWNER" },
+                    { "4bcaba51-8fad-43ed-ab53-17f9b3d1b50b", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
