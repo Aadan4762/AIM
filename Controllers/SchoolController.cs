@@ -1,13 +1,14 @@
 using AIM.Data;
 using AIM.Dtos.SchoolDtos;
 using AIM.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AIM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize] // Uncomment this attribute to require authentication
+    [Authorize] // Uncomment this attribute to require authentication
     public class SchoolController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -48,7 +49,7 @@ namespace AIM.Controllers
         
         [HttpGet]
         [Route("{id:guid}")]
-        //  [Authorize(Roles = $"{StaticUserRoles.ADMIN},{StaticUserRoles.OWNER},{StaticUserRoles.USER}")]
+        [Authorize(Roles = $"{StaticUserRoles.ADMIN},{StaticUserRoles.OWNER},{StaticUserRoles.USER}")]
         public IActionResult GetSchoolById(Guid id)
         {
             var school = dbContext.Schools.Find(id);
