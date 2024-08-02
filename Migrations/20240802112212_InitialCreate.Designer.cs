@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240802061124_InitialCreate")]
+    [Migration("20240802112212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -105,6 +105,57 @@ namespace AIM.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("AIM.Models.Entities.School", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("County")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("InstitutionName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SubCounty")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TitleDeed")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Zone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Schools");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -133,19 +184,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "029af3b1-6ac7-43ba-a747-59144c0b5b4f",
+                            Id = "6d47dba0-07c8-4897-ba95-9c9a7fa8cffd",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "4bcaba51-8fad-43ed-ab53-17f9b3d1b50b",
+                            Id = "5e280d59-ec65-4d67-80fd-24a0e1c1a7fa",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "09e3f467-5af2-47ec-806e-7a41dd1d6cb2",
+                            Id = "0983325b-a8eb-459f-b6bb-e9c05ae3a92d",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
