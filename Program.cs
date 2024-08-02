@@ -49,7 +49,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 21)) // Replace with your MySQL version
+        new MySqlServerVersion(new Version(8, 0, 39)) // Replace with your MySQL version
     )
 );
 // Add Identity
