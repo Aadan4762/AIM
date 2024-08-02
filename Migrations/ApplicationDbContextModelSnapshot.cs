@@ -181,19 +181,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6d47dba0-07c8-4897-ba95-9c9a7fa8cffd",
+                            Id = "0b2eeb59-3785-4708-92be-20979410067c",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5e280d59-ec65-4d67-80fd-24a0e1c1a7fa",
+                            Id = "53548cf0-2522-4417-97a5-cd13bd55dbdb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0983325b-a8eb-459f-b6bb-e9c05ae3a92d",
+                            Id = "5d9d3424-f724-45f0-aab8-d10a3eb4dbf1",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });

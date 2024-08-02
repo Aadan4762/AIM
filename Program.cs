@@ -14,6 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Register the ISchoolService and its implementation
+builder.Services.AddScoped<ISchoolService, SchoolServiceImpl>();
+// Register other dependencies
+builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+
+
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -93,6 +99,8 @@ builder.Services
 
 // Inject dependencies
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+
 
 var app = builder.Build();
 

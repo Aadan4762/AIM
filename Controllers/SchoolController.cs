@@ -1,6 +1,6 @@
-using AIM.Data;
 using AIM.Dtos.SchoolDtos;
 using AIM.Models.Entities;
+using AIM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,51 +8,38 @@ namespace AIM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Uncomment this attribute to require authentication
+  //  [Authorize] // Uncomment this attribute to require authentication
     public class SchoolController : ControllerBase
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ISchoolService _schoolService;
 
-        public SchoolController(ApplicationDbContext dbContext)
+        public SchoolController(ISchoolService schoolService)
         {
-            this.dbContext = dbContext;
+            _schoolService = schoolService;
         }
 
         [HttpPost]
         [Route("create")]
-        public IActionResult CreateSchool(AddSchoolDto addSchoolDto)
+        public async Task<IActionResult> CreateSchool(AddSchoolDto addSchoolDto)
         {
-            var schoolEntity = new School()
-            {
-                InstitutionName = addSchoolDto.InstitutionName,
-                County = addSchoolDto.County,
-                SubCounty = addSchoolDto.SubCounty,
-                Zone = addSchoolDto.Zone,
-                Code = addSchoolDto.Code,
-                Category = addSchoolDto.Category,
-                Size = addSchoolDto.Size,
-                Longitude = addSchoolDto.Longitude,
-                Latitude = addSchoolDto.Latitude,
-                TitleDeed = addSchoolDto.TitleDeed,
-            };
-            dbContext.Schools.Add(schoolEntity);
-            dbContext.SaveChanges();
+            var schoolEntity = await _schoolService.CreateSchoolAsync(addSchoolDto);
             return Ok(schoolEntity);
         }
+
         [HttpGet]
         [Route("list")]
-        public IActionResult GetAllSchools()
+        public async Task<IActionResult> GetAllSchools()
         {
-            var allSchools = dbContext.Schools.ToList();
+            var allSchools = await _schoolService.GetAllSchoolsAsync();
             return Ok(allSchools);
         }
-        
+
         [HttpGet]
         [Route("{id:guid}")]
-        [Authorize(Roles = $"{StaticUserRoles.ADMIN},{StaticUserRoles.OWNER},{StaticUserRoles.USER}")]
-        public IActionResult GetSchoolById(Guid id)
+      //  [Authorize(Roles = $"{StaticUserRoles.ADMIN},{StaticUserRoles.OWNER},{StaticUserRoles.USER}")]
+        public async Task<IActionResult> GetSchoolById(Guid id)
         {
-            var school = dbContext.Schools.Find(id);
+            var school = await _schoolService.GetSchoolByIdAsync(id);
             if (school == null)
             {
                 return NotFound();
@@ -62,42 +49,27 @@ namespace AIM.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public IActionResult UpdateSchool(Guid id, UpdateSchoolDto updateSchoolDto)
+        public async Task<IActionResult> UpdateSchool(Guid id, UpdateSchoolDto updateSchoolDto)
         {
-            var school = dbContext.Schools.Find(id);
+            var school = await _schoolService.UpdateSchoolAsync(id, updateSchoolDto);
             if (school == null)
             {
                 return NotFound();
             }
-            school.InstitutionName = updateSchoolDto.InstitutionName;
-            school.County = updateSchoolDto.County;
-            school.SubCounty = updateSchoolDto.SubCounty;
-            school.Zone = updateSchoolDto.Zone;
-            school.Code = updateSchoolDto.Code;
-            school.Category = updateSchoolDto.Category;
-            school.Size = updateSchoolDto.Size;
-            school.Longitude = updateSchoolDto.Longitude;
-            school.Latitude = updateSchoolDto.Latitude;
-            school.TitleDeed = updateSchoolDto.TitleDeed;
-
-            dbContext.SaveChanges();
 
             return Ok(school);
         }
 
         [HttpDelete]
         [Route("{id:guid}")]
-
-        public IActionResult DeleteSchoolById(Guid id)
+        public async Task<IActionResult> DeleteSchoolById(Guid id)
         {
-            var school = dbContext.Schools.Find(id);
-            if (school == null)
+            var result = await _schoolService.DeleteSchoolByIdAsync(id);
+            if (!result)
             {
                 return NotFound();
             }
 
-            dbContext.Schools.Remove(school);
-            dbContext.SaveChanges();
             return Ok();
         }
     }
