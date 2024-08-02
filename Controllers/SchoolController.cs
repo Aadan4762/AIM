@@ -18,6 +18,7 @@ namespace AIM.Controllers
         }
 
         [HttpPost]
+        [Route("create")]
         public IActionResult CreateSchool(AddSchoolDto addSchoolDto)
         {
             var schoolEntity = new School()
@@ -38,6 +39,7 @@ namespace AIM.Controllers
             return Ok(schoolEntity);
         }
         [HttpGet]
+        [Route("list")]
         public IActionResult GetAllSchools()
         {
             var allSchools = dbContext.Schools.ToList();
