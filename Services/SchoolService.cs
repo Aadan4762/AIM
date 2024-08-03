@@ -2,10 +2,6 @@ using AIM.Dtos.SchoolDtos;
 using AIM.Interface;
 using AIM.Models.Entities;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace AIM.Services
 {
     public class SchoolService : ISchoolService
@@ -33,10 +29,12 @@ namespace AIM.Services
         {
             var school = _mapper.Map<School>(addSchoolDto);
             var result = await _schoolRepository.AddSchoolAsync(school);
+
             return new SchoolResponse
             {
-                IsSucceed = true,
-                Message = "School added successfully"
+                IsSucceed = result != null,
+                Message = result != null ? "School added successfully" : "Failed to add school",
+                School = result
             };
         }
 
@@ -53,11 +51,12 @@ namespace AIM.Services
             }
 
             _mapper.Map(updateSchoolDto, school);
-            await _schoolRepository.UpdateSchoolAsync(school);
+            var result = await _schoolRepository.UpdateSchoolAsync(school);
             return new SchoolResponse
             {
-                IsSucceed = true,
-                Message = "School updated successfully"
+                IsSucceed = result != null,
+                Message = result != null ? "School updated successfully" : "Failed to update school",
+                School = result
             };
         }
 

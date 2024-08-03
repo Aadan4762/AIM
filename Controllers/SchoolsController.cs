@@ -22,7 +22,7 @@ namespace AIM.Controllers
 
         // Get all schools
         [HttpGet]
-       // [Authorize]
+        // [Authorize]
         public async Task<ActionResult<IEnumerable<School>>> GetAllSchools()
         {
             var schools = await _schoolService.GetAllSchoolsAsync();
@@ -31,7 +31,7 @@ namespace AIM.Controllers
 
         // Get school by id
         [HttpGet("{id}")]
-       // [Authorize]
+        // [Authorize]
         public async Task<ActionResult<School>> GetSchoolById(Guid id)
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
@@ -43,16 +43,27 @@ namespace AIM.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<SchoolResponse>> AddSchool([FromBody] AddSchoolDto addSchoolDto)
         {
             try
             {
+                if (addSchoolDto == null)
+                {
+                    return BadRequest(new { message = "Invalid school data provided" });
+                }
+
                 var response = await _schoolService.AddSchoolAsync(addSchoolDto);
+                if (response == null || response.School == null)
+                {
+                    return StatusCode(500, new { message = "Failed to add school. Service returned null response." });
+                }
+
                 if (!response.IsSucceed)
                 {
                     return BadRequest(new { message = "Failed to add school", details = response });
                 }
+
                 return CreatedAtAction(nameof(GetSchoolById), new { id = response.School.Id }, new { message = "School added successfully", school = response.School });
             }
             catch (Exception ex)
@@ -62,10 +73,9 @@ namespace AIM.Controllers
             }
         }
 
-
         // Update a school
         [HttpPut("{id}")]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<SchoolResponse>> UpdateSchool(Guid id, [FromBody] UpdateSchoolDto updateSchoolDto)
         {
             var response = await _schoolService.UpdateSchoolAsync(id, updateSchoolDto);
@@ -73,12 +83,13 @@ namespace AIM.Controllers
             {
                 return NotFound(response);
             }
+
             return Ok(response);
         }
 
         // Delete a school
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<SchoolResponse>> DeleteSchool(Guid id)
         {
             var response = await _schoolService.DeleteSchoolAsync(id);
