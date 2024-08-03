@@ -1,8 +1,11 @@
 using System.Text;
+using AIM;
 using AIM.Data;
 using AIM.Interface;
 using AIM.Models.Entities;
+using AIM.Repositories;
 using AIM.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Register the ISchoolService and its implementation
-builder.Services.AddScoped<ISchoolService, SchoolServiceImpl>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
 // Register other dependencies
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
 
 
 // Configure Swagger/OpenAPI

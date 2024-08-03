@@ -1,14 +1,17 @@
 using AIM.Dtos.SchoolDtos;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AIM.Models.Entities;
 
-namespace AIM.Services
+namespace AIM.Interface
 {
     public interface ISchoolService
     {
-        Task<School> CreateSchoolAsync(AddSchoolDto addSchoolDto);
         Task<IEnumerable<School>> GetAllSchoolsAsync();
         Task<School> GetSchoolByIdAsync(Guid id);
-        Task<School> UpdateSchoolAsync(Guid id, UpdateSchoolDto updateSchoolDto);
-        Task<bool> DeleteSchoolByIdAsync(Guid id);
+        Task<SchoolResponse> AddSchoolAsync(AddSchoolDto addSchoolDto);
+        Task<SchoolResponse> UpdateSchoolAsync(Guid id, UpdateSchoolDto updateSchoolDto);
+        Task<SchoolResponse> DeleteSchoolAsync(Guid id);
     }
 }

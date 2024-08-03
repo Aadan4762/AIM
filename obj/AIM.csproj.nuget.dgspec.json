@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/adan/RiderProjects/AIM/AIM.csproj": {}
+    "/home/adan/AIM/AIM.csproj": {}
   },
   "projects": {
-    "/home/adan/RiderProjects/AIM/AIM.csproj": {
+    "/home/adan/AIM/AIM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/adan/RiderProjects/AIM/AIM.csproj",
+        "projectUniqueName": "/home/adan/AIM/AIM.csproj",
         "projectName": "AIM",
-        "projectPath": "/home/adan/RiderProjects/AIM/AIM.csproj",
+        "projectPath": "/home/adan/AIM/AIM.csproj",
         "packagesPath": "/home/adan/.nuget/packages/",
-        "outputPath": "/home/adan/RiderProjects/AIM/obj/",
+        "outputPath": "/home/adan/AIM/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/adan/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,18 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Attributes": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.7, )"

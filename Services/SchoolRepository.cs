@@ -1,49 +1,56 @@
+using AIM.Data;
+using AIM.Interface;
 using AIM.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace AIM.Data
+namespace AIM.Repositories
 {
     public class SchoolRepository : ISchoolRepository
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _context;
 
-        public SchoolRepository(ApplicationDbContext dbContext)
+        public SchoolRepository(ApplicationDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
-        public async Task AddAsync(School school)
+        public async Task<IEnumerable<School>> GetAllSchoolsAsync()
         {
-            await _dbContext.Schools.AddAsync(school);
-            await _dbContext.SaveChangesAsync();
+            return await _context.Schools.ToListAsync();
         }
 
-        public async Task<IEnumerable<School>> GetAllAsync()
+        public async Task<School> GetSchoolByIdAsync(Guid id)
         {
-            return await _dbContext.Schools.ToListAsync();
+            return await _context.Schools.FindAsync(id);
         }
 
-        public async Task<School> GetByIdAsync(Guid id)
+        public async Task<School> AddSchoolAsync(School school)
         {
-            return await _dbContext.Schools.FindAsync(id);
+            _context.Schools.Add(school);
+            await _context.SaveChangesAsync();
+            return school;
         }
 
-        public async Task UpdateAsync(School school)
+        public async Task<School> UpdateSchoolAsync(School school)
         {
-            _dbContext.Schools.Update(school);
-            await _dbContext.SaveChangesAsync();
+            _context.Schools.Update(school);
+            await _context.SaveChangesAsync();
+            return school;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteSchoolAsync(Guid id)
         {
-            var school = await _dbContext.Schools.FindAsync(id);
+            var school = await _context.Schools.FindAsync(id);
             if (school == null)
             {
                 return false;
             }
 
-            _dbContext.Schools.Remove(school);
-            await _dbContext.SaveChangesAsync();
+            _context.Schools.Remove(school);
+            await _context.SaveChangesAsync();
             return true;
         }
     }

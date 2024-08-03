@@ -1,7 +1,11 @@
-namespace AIM.Dtos.SchoolDtos;
+using AIM.Models.Entities;
 
-public class SchoolResponse
+namespace AIM.Dtos.SchoolDtos
 {
-    public bool IsSucceed { get; set; }
-    public string Message { get; set; }
+    public class SchoolResponse
+    {
+        public bool IsSucceed { get; set; }
+        public string Message { get; set; }
+        public School School { get; set; }
+    }
 }
