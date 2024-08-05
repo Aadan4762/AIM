@@ -1,16 +1,12 @@
 using AIM.Dtos.SchoolDtos;
 using AIM.Interface;
-using AIM.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AIM.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SchoolsController : ControllerBase
     {
         private readonly ISchoolService _schoolService;
@@ -20,84 +16,54 @@ namespace AIM.Controllers
             _schoolService = schoolService;
         }
 
-        // Get all schools
         [HttpGet]
-        // [Authorize]
-        public async Task<ActionResult<IEnumerable<School>>> GetAllSchools()
+        public async Task<ActionResult<IEnumerable<SchoolResponse>>> GetAllSchools()
         {
             var schools = await _schoolService.GetAllSchoolsAsync();
             return Ok(schools);
         }
 
-        // Get school by id
         [HttpGet("{id}")]
-        // [Authorize]
-        public async Task<ActionResult<School>> GetSchoolById(Guid id)
+        public async Task<ActionResult<SchoolResponse>> GetSchoolById(Guid id)
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
             if (school == null)
             {
-                return NotFound();
+                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
             }
             return Ok(school);
         }
 
         [HttpPost]
-        // [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<SchoolResponse>> AddSchool([FromBody] AddSchoolDto addSchoolDto)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<SchoolResponse>> AddSchool(AddSchoolDto addSchoolDto)
         {
-            try
-            {
-                if (addSchoolDto == null)
-                {
-                    return BadRequest(new { message = "Invalid school data provided" });
-                }
-
-                var response = await _schoolService.AddSchoolAsync(addSchoolDto);
-                if (response == null || response.School == null)
-                {
-                    return StatusCode(500, new { message = "Failed to add school. Service returned null response." });
-                }
-
-                if (!response.IsSucceed)
-                {
-                    return BadRequest(new { message = "Failed to add school", details = response });
-                }
-
-                return CreatedAtAction(nameof(GetSchoolById), new { id = response.School.Id }, new { message = "School added successfully", school = response.School });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return StatusCode(500, new { message = "An internal server error occurred", details = ex.Message });
-            }
+            var school = await _schoolService.AddSchoolAsync(addSchoolDto);
+            return CreatedAtAction(nameof(GetSchoolById), new { id = school.School.Id }, school);
         }
 
-        // Update a school
         [HttpPut("{id}")]
-        // [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<SchoolResponse>> UpdateSchool(Guid id, [FromBody] UpdateSchoolDto updateSchoolDto)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<SchoolResponse>> UpdateSchool(Guid id, UpdateSchoolDto updateSchoolDto)
         {
-            var response = await _schoolService.UpdateSchoolAsync(id, updateSchoolDto);
-            if (!response.IsSucceed)
+            var school = await _schoolService.UpdateSchoolAsync(id, updateSchoolDto);
+            if (school == null)
             {
-                return NotFound(response);
+                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
             }
-
-            return Ok(response);
+            return Ok(school);
         }
 
-        // Delete a school
         [HttpDelete("{id}")]
-        // [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<SchoolResponse>> DeleteSchool(Guid id)
         {
-            var response = await _schoolService.DeleteSchoolAsync(id);
-            if (!response.IsSucceed)
+            var result = await _schoolService.DeleteSchoolAsync(id);
+            if (!result)
             {
-                return NotFound(response);
+                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
             }
-            return NoContent();
+            return Ok(new SchoolResponse { IsSucceed = true, Message = "School deleted successfully" });
         }
     }
 }

@@ -1,7 +1,7 @@
 using AIM.Dtos.SchoolDtos;
 using AIM.Interface;
-using AIM.Models.Entities;
 using AutoMapper;
+
 namespace AIM.Services
 {
     public class SchoolService : ISchoolService
@@ -15,59 +15,41 @@ namespace AIM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<School>> GetAllSchoolsAsync()
+        public async Task<IEnumerable<SchoolResponse>> GetAllSchoolsAsync()
         {
-            return await _schoolRepository.GetAllSchoolsAsync();
+            var schools = await _schoolRepository.GetAllSchoolsAsync();
+            return schools.Select(school => new SchoolResponse { IsSucceed = true, School = school });
         }
 
-        public async Task<School> GetSchoolByIdAsync(Guid id)
-        {
-            return await _schoolRepository.GetSchoolByIdAsync(id);
-        }
-
-        public async Task<SchoolResponse> AddSchoolAsync(AddSchoolDto addSchoolDto)
-        {
-            var school = _mapper.Map<School>(addSchoolDto);
-            var result = await _schoolRepository.AddSchoolAsync(school);
-
-            return new SchoolResponse
-            {
-                IsSucceed = result != null,
-                Message = result != null ? "School added successfully" : "Failed to add school",
-                School = result
-            };
-        }
-
-        public async Task<SchoolResponse> UpdateSchoolAsync(Guid id, UpdateSchoolDto updateSchoolDto)
+        public async Task<SchoolResponse> GetSchoolByIdAsync(Guid id)
         {
             var school = await _schoolRepository.GetSchoolByIdAsync(id);
             if (school == null)
             {
-                return new SchoolResponse
-                {
-                    IsSucceed = false,
-                    Message = "School not found"
-                };
+                return null;
             }
-
-            _mapper.Map(updateSchoolDto, school);
-            var result = await _schoolRepository.UpdateSchoolAsync(school);
-            return new SchoolResponse
-            {
-                IsSucceed = result != null,
-                Message = result != null ? "School updated successfully" : "Failed to update school",
-                School = result
-            };
+            return new SchoolResponse { IsSucceed = true, School = school };
         }
 
-        public async Task<SchoolResponse> DeleteSchoolAsync(Guid id)
+        public async Task<SchoolResponse> AddSchoolAsync(AddSchoolDto addSchoolDto)
         {
-            var result = await _schoolRepository.DeleteSchoolAsync(id);
-            return new SchoolResponse
+            var school = await _schoolRepository.AddSchoolAsync(addSchoolDto);
+            return new SchoolResponse { IsSucceed = true, School = school };
+        }
+
+        public async Task<SchoolResponse> UpdateSchoolAsync(Guid id, UpdateSchoolDto updateSchoolDto)
+        {
+            var school = await _schoolRepository.UpdateSchoolAsync(id, updateSchoolDto);
+            if (school == null)
             {
-                IsSucceed = result,
-                Message = result ? "School deleted successfully" : "Error deleting school"
-            };
+                return null;
+            }
+            return new SchoolResponse { IsSucceed = true, School = school };
+        }
+
+        public async Task<bool> DeleteSchoolAsync(Guid id)
+        {
+            return await _schoolRepository.DeleteSchoolAsync(id);
         }
     }
 }

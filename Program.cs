@@ -17,15 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Register the ISchoolService and its implementation
-builder.Services.AddScoped<ISchoolService, SchoolService>();
 // Register other dependencies
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-
-
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -103,11 +99,6 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
         };
     });
-
-// Inject dependencies
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
-
 
 var app = builder.Build();
 

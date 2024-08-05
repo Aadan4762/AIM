@@ -1,7 +1,5 @@
+using AIM.Dtos.SchoolDtos;
 using AIM.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AIM.Interface
 {
@@ -9,8 +7,8 @@ namespace AIM.Interface
     {
         Task<IEnumerable<School>> GetAllSchoolsAsync();
         Task<School> GetSchoolByIdAsync(Guid id);
-        Task<School> AddSchoolAsync(School school);
-        Task<School> UpdateSchoolAsync(School school);
+        Task<School> AddSchoolAsync(AddSchoolDto addSchoolDto);
+        Task<School> UpdateSchoolAsync(Guid id, UpdateSchoolDto updateSchoolDto);
         Task<bool> DeleteSchoolAsync(Guid id);
     }
 }

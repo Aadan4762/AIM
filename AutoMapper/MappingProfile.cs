@@ -1,6 +1,6 @@
+using AutoMapper;
 using AIM.Dtos.SchoolDtos;
 using AIM.Models.Entities;
-using AutoMapper;
 
 namespace AIM
 {
@@ -10,6 +10,7 @@ namespace AIM
         {
             CreateMap<AddSchoolDto, School>();
             CreateMap<UpdateSchoolDto, School>();
+            CreateMap<School, SchoolResponse>();
         }
     }
 }
