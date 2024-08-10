@@ -1,11 +1,7 @@
 using System.Text;
 using AIM;
 using AIM.Data;
-using AIM.Interface;
 using AIM.Models.Entities;
-using AIM.Repositories;
-using AIM.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +10,14 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Register other dependencies
-builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
-builder.Services.AddScoped<ISchoolService, SchoolService>();
+// Register the IUnitOfWork and its implementation
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

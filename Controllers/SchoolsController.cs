@@ -1,69 +1,84 @@
-using AIM.Dtos.SchoolDtos;
-using AIM.Interface;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AIM.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class StudentsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class SchoolsController : ControllerBase
+    private readonly IUnitOfWork _unitOfWork;
+
+    public StudentsController(IUnitOfWork unitOfWork)
     {
-        private readonly ISchoolService _schoolService;
+        _unitOfWork = unitOfWork;
+    }
 
-        public SchoolsController(ISchoolService schoolService)
+    [HttpGet]
+    public async Task<IActionResult> GetAllStudents()
+    {
+        var students = await _unitOfWork.Students.GetAllAsync();
+        return Ok(students);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetStudent(int id)
+    {
+        var student = await _unitOfWork.Students.GetByIdAsync(id);
+        if (student == null)
         {
-            _schoolService = schoolService;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<SchoolResponse>>> GetAllSchools()
+        return Ok(student);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateStudent(CreateStudentDto studentDto)
+    {
+        var student = new Student
         {
-            var schools = await _schoolService.GetAllSchoolsAsync();
-            return Ok(schools);
+            FirstName = studentDto.FirstName,
+            LastName = studentDto.LastName,
+            Gender = studentDto.Gender,
+            Email = studentDto.Email,
+            DateOfBirth = studentDto.DateOfBirth
+        };
+
+        await _unitOfWork.Students.AddAsync(student);
+        await _unitOfWork.CompleteAsync();
+
+        return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateStudent(int id, StudentDto studentDto)
+    {
+        var student = await _unitOfWork.Students.GetByIdAsync(id);
+        if (student == null)
+        {
+            return NotFound();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SchoolResponse>> GetSchoolById(Guid id)
+        student.FirstName = studentDto.FirstName;
+        student.LastName = studentDto.LastName;
+        student.Email = studentDto.Email;
+
+        _unitOfWork.Students.Update(student);
+        await _unitOfWork.CompleteAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStudent(int id)
+    {
+        var student = await _unitOfWork.Students.GetByIdAsync(id);
+        if (student == null)
         {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
-            if (school == null)
-            {
-                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
-            }
-            return Ok(school);
+            return NotFound();
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<SchoolResponse>> AddSchool(AddSchoolDto addSchoolDto)
-        {
-            var school = await _schoolService.AddSchoolAsync(addSchoolDto);
-            return CreatedAtAction(nameof(GetSchoolById), new { id = school.School.Id }, school);
-        }
+        _unitOfWork.Students.Remove(student);
+        await _unitOfWork.CompleteAsync();
 
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<SchoolResponse>> UpdateSchool(Guid id, UpdateSchoolDto updateSchoolDto)
-        {
-            var school = await _schoolService.UpdateSchoolAsync(id, updateSchoolDto);
-            if (school == null)
-            {
-                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
-            }
-            return Ok(school);
-        }
-
-        [HttpDelete("{id}")]
-       // [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<SchoolResponse>> DeleteSchool(Guid id)
-        {
-            var result = await _schoolService.DeleteSchoolAsync(id);
-            if (!result)
-            {
-                return NotFound(new SchoolResponse { IsSucceed = false, Message = "School not found" });
-            }
-            return Ok(new SchoolResponse { IsSucceed = true, Message = "School deleted successfully" });
-        }
+        return NoContent();
     }
 }

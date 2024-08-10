@@ -80,34 +80,24 @@ namespace AIM.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Schools",
+                name: "Students",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    InstitutionName = table.Column<string>(type: "longtext", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    County = table.Column<string>(type: "longtext", nullable: false)
+                    LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SubCounty = table.Column<string>(type: "longtext", nullable: false)
+                    Gender = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Zone = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Code = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Category = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Size = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Longitude = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Latitude = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TitleDeed = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schools", x => x.id);
+                    table.PrimaryKey("PK_Students", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -243,9 +233,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0b2eeb59-3785-4708-92be-20979410067c", null, "User", "USER" },
-                    { "53548cf0-2522-4417-97a5-cd13bd55dbdb", null, "Admin", "ADMIN" },
-                    { "5d9d3424-f724-45f0-aab8-d10a3eb4dbf1", null, "Owner", "OWNER" }
+                    { "4d69b99a-9fa8-450c-82b1-be1dc11f5fe0", null, "Owner", "OWNER" },
+                    { "bc0a915e-e5d0-4b0c-a029-537cf7faa530", null, "Admin", "ADMIN" },
+                    { "e93d93ea-cbd8-48b9-b954-8044c0eda4e4", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -305,7 +295,7 @@ namespace AIM.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Schools");
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

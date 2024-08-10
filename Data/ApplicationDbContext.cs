@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
     
     public DbSet<ApplicationUser> Registers { get; set; }
-    public DbSet<School> Schools { get; set; }
+    public DbSet<Student> Students { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
