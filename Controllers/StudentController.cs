@@ -1,86 +1,122 @@
-using Microsoft.AspNetCore.Authorization;
+using AIM.Models.Entities;
+using AIM.Dtos.EntityDtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-[Route("api/[controller]")]
-[ApiController]
-public class StudentsController : ControllerBase
+namespace AIM.Controllers
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public StudentsController(IUnitOfWork unitOfWork)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class StudentController : ControllerBase
     {
-        _unitOfWork = unitOfWork;
-    }
+        private readonly IUnitOfWork _unitOfWork;
 
-    [HttpGet]
-    [Authorize(Roles = "Admin,User")]
-    public async Task<IActionResult> GetAllStudents()
-    {
-        var students = await _unitOfWork.Students.GetAllAsync();
-        return Ok(students);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetStudent(int id)
-    {
-        var student = await _unitOfWork.Students.GetByIdAsync(id);
-        if (student == null)
+        public StudentController(IUnitOfWork unitOfWork)
         {
-            return NotFound();
+            _unitOfWork = unitOfWork;
         }
 
-        return Ok(student);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateStudent(CreateStudentDto studentDto)
-    {
-        var student = new Student
+        // GET: api/Student
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudents()
         {
-            FirstName = studentDto.FirstName,
-            LastName = studentDto.LastName,
-            Gender = studentDto.Gender,
-            Email = studentDto.Email,
-            DateOfBirth = studentDto.DateOfBirth
-        };
+            var students = await _unitOfWork.Students.GetAllAsync();
+            var studentDtos = new List<StudentDto>();
 
-        await _unitOfWork.Students.AddAsync(student);
-        await _unitOfWork.CompleteAsync();
+            foreach (var student in students)
+            {
+                studentDtos.Add(new StudentDto
+                {
+                    Id = student.Id,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Gender = student.Gender,
+                    Email = student.Email
+                });
+            }
 
-        return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateStudent(int id, StudentDto studentDto)
-    {
-        var student = await _unitOfWork.Students.GetByIdAsync(id);
-        if (student == null)
-        {
-            return NotFound();
+            return Ok(studentDtos);
         }
 
-        student.FirstName = studentDto.FirstName;
-        student.LastName = studentDto.LastName;
-        student.Email = studentDto.Email;
-
-        _unitOfWork.Students.Update(student);
-        await _unitOfWork.CompleteAsync();
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteStudent(int id)
-    {
-        var student = await _unitOfWork.Students.GetByIdAsync(id);
-        if (student == null)
+        // GET: api/Student/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<StudentDto>> GetStudent(int id)
         {
-            return NotFound();
+            var student = await _unitOfWork.Students.GetByIdAsync(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var studentDto = new StudentDto
+            {
+                Id = student.Id,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Gender = student.Gender,
+                Email = student.Email
+            };
+
+            return Ok(studentDto);
         }
 
-        _unitOfWork.Students.Remove(student);
-        await _unitOfWork.CompleteAsync();
+        // POST: api/Student
+        [HttpPost]
+        public async Task<ActionResult<Student>> PostStudent(StudentDto studentDto)
+        {
+            var student = new Student
+            {
+                FirstName = studentDto.FirstName,
+                LastName = studentDto.LastName,
+                Gender = studentDto.Gender,
+                Email = studentDto.Email
+            };
 
-        return NoContent();
+            await _unitOfWork.Students.AddAsync(student);
+            await _unitOfWork.CompleteAsync();
+
+            return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
+        }
+
+        // PUT: api/Student/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutStudent(int id, StudentDto studentDto)
+        {
+            var student = await _unitOfWork.Students.GetByIdAsync(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            student.FirstName = studentDto.FirstName;
+            student.LastName = studentDto.LastName;
+            student.Gender = studentDto.Gender;
+            student.Email = studentDto.Email;
+
+            _unitOfWork.Students.Update(student);
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
+        }
+
+        // DELETE: api/Student/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var student = await _unitOfWork.Students.GetByIdAsync(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Students.Remove(student);
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
+        }
     }
 }
