@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -12,6 +13,7 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,User")]
     public async Task<IActionResult> GetAllStudents()
     {
         var students = await _unitOfWork.Students.GetAllAsync();

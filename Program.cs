@@ -1,7 +1,8 @@
 using System.Text;
-using AIM;
 using AIM.Data;
+using AIM.Interface;
 using AIM.Models.Entities;
+using AIM.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +11,12 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Register IUnitOfWork and IAuthService
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 // Add services to the container.
 builder.Services.AddControllers();
-
-// Register the IUnitOfWork and its implementation
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
