@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240810174954_InitialCreate")]
+    [Migration("20240812071446_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -105,7 +105,7 @@ namespace AIM.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("AIM.Models.Entities.Teacher", b =>
+            modelBuilder.Entity("AIM.Models.Entities.Furniture", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -113,33 +113,88 @@ namespace AIM.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("color")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("FirstName")
+                    b.Property<int>("cost")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("date_recorded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("dimension")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("material")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("tag")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("upload_image")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Furnitures");
+                });
+
+            modelBuilder.Entity("AIM.Models.Entities.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("employee_no")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("first_name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("last_name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("user_image")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -170,19 +225,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1be08a4f-d99d-4cf0-8abe-5cba70e3f45d",
+                            Id = "b8fd2c9d-800b-4413-8679-ec45f3fe949f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "61f22acd-94ef-42e7-888a-1a1b66fdcded",
+                            Id = "f81b6251-1b7d-4431-8d6a-304521a18629",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8382439c-6a71-4c3a-81f2-b53fc820ef7c",
+                            Id = "fab505b0-b5f3-4b7e-84dd-cd2a451d9af0",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
@@ -292,38 +347,6 @@ namespace AIM.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

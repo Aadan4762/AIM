@@ -2,7 +2,8 @@ using AIM.Models.Entities;
 
 public interface IUnitOfWork : IDisposable
 {
-    IRepository<Student> Students { get; }
-    IRepository<Teacher> Teachers { get; }
+
+    IRepository<Furniture> Furnitures { get; }
+    IRepository<User> Users { get;  }
     Task<int> CompleteAsync();
 }

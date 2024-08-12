@@ -12,8 +12,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
     
     public DbSet<ApplicationUser> Registers { get; set; }
-    public DbSet<Student> Students { get; set; }
-    public DbSet<Teacher> Teachers { get; set; }
+    public DbSet<Furniture> Furnitures { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
