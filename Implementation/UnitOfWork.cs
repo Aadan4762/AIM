@@ -7,6 +7,7 @@ public class UnitOfWork : IUnitOfWork
 
     private Repository<Furniture> _furnitureRepository;
     private Repository<User> _userRepository;
+    private Repository<Vehicle> _vehicleRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -30,6 +31,8 @@ public class UnitOfWork : IUnitOfWork
         }
         
     }
+
+    public IRepository<Vehicle> Vehicles { get; }
 
     public async Task<int> CompleteAsync()
     {

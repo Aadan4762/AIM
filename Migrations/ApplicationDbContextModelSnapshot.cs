@@ -194,6 +194,81 @@ namespace AIM.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AIM.Models.Entities.Vehicle", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("body")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("color")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("date_recorded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("drive_train")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("engine_type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("fuel_type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("insuarance")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("make")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("model")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("number_plate")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("sitting_capacity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("vin")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("warranty")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("year")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Vehicles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -222,19 +297,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b8fd2c9d-800b-4413-8679-ec45f3fe949f",
+                            Id = "b90b1129-96e5-423c-a676-baff2c9ede44",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "f81b6251-1b7d-4431-8d6a-304521a18629",
+                            Id = "58084369-602a-4c26-9ff3-d52974909419",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fab505b0-b5f3-4b7e-84dd-cd2a451d9af0",
+                            Id = "f2b421b7-6880-40de-8636-336cfa50955c",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
