@@ -1,6 +1,7 @@
 using AIM.Dtos.EntityDtos;
 using AIM.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AIM.Controllers
@@ -11,16 +12,37 @@ namespace AIM.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-
         public UserController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers(
+            [FromQuery] string email = null,
+            [FromQuery] string employeeNo = null,
+            [FromQuery] string phone = null)
         {
-            var users = await _unitOfWork.Users.GetAllAsync();
+            var usersQuery = _unitOfWork.Users.GetAllAsync();
+
+            var users = await usersQuery;
+
+            // Apply filtering
+            if (!string.IsNullOrEmpty(email))
+            {
+                users = users.Where(u => u.email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            
+            if (!string.IsNullOrEmpty(employeeNo))
+            {
+                users = users.Where(u => u.employee_no.Equals(employeeNo, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            
+            if (!string.IsNullOrEmpty(phone))
+            {
+                users = users.Where(u => u.phone.Equals(phone, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             return Ok(users);
         }
 
@@ -75,6 +97,7 @@ namespace AIM.Controllers
             {
                 return NotFound();
             }
+
             // Map UserDto to existing User entity
             existingUser.first_name = userDto.first_name;
             existingUser.last_name = userDto.last_name;

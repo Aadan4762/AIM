@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240814095106_InitialCreate")]
+    [Migration("20240814143910_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -321,19 +321,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1c7358dc-e938-41a1-aec7-1f51e0e66021",
+                            Id = "49fb093d-e93b-4649-9b8e-3be97ea85700",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "a5767476-da3c-468b-aa88-bcfe6e7d705e",
+                            Id = "cb3b9961-a243-4d1d-a171-8fcd06b1c77f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "532ac136-a2b9-43e8-972d-9f25b2fead31",
+                            Id = "192bd10d-587e-4620-9f4d-cb040c9c0374",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
