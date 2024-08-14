@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240812143730_InitialCreate")]
+    [Migration("20240814095106_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -103,6 +103,27 @@ namespace AIM.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("AIM.Models.Entities.Department", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("AIM.Models.Entities.Furniture", b =>
@@ -300,19 +321,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b90b1129-96e5-423c-a676-baff2c9ede44",
+                            Id = "1c7358dc-e938-41a1-aec7-1f51e0e66021",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "58084369-602a-4c26-9ff3-d52974909419",
+                            Id = "a5767476-da3c-468b-aa88-bcfe6e7d705e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f2b421b7-6880-40de-8636-336cfa50955c",
+                            Id = "532ac136-a2b9-43e8-972d-9f25b2fead31",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });

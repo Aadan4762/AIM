@@ -80,6 +80,23 @@ namespace AIM.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Furnitures",
                 columns: table => new
                 {
@@ -312,9 +329,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "58084369-602a-4c26-9ff3-d52974909419", null, "Admin", "ADMIN" },
-                    { "b90b1129-96e5-423c-a676-baff2c9ede44", null, "User", "USER" },
-                    { "f2b421b7-6880-40de-8636-336cfa50955c", null, "Owner", "OWNER" }
+                    { "1c7358dc-e938-41a1-aec7-1f51e0e66021", null, "User", "USER" },
+                    { "532ac136-a2b9-43e8-972d-9f25b2fead31", null, "Owner", "OWNER" },
+                    { "a5767476-da3c-468b-aa88-bcfe6e7d705e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -372,6 +389,9 @@ namespace AIM.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "Furnitures");
