@@ -16,9 +16,29 @@ public class VehicleController : ControllerBase
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllVehicles()
+        public async Task<IActionResult> GetAllVehicles(
+            //check for null in each query before applying filter
+            [FromQuery] string number_plate = null,
+            [FromQuery] string vin = null,
+            [FromQuery] string model = null
+            )
         {
             var vehicles = await _unitOfWork.Vehicles.GetAllAsync();
+                // Apply filtering based on query parameters
+            if (!string.IsNullOrEmpty(number_plate))
+            {
+                vehicles = vehicles.Where(v => v.number_plate.Contains(number_plate, StringComparison.OrdinalIgnoreCase));
+            }
+    
+            if (!string.IsNullOrEmpty(vin))
+            {
+                vehicles = vehicles.Where(v => v.vin.Contains(vin, StringComparison.OrdinalIgnoreCase));
+            }
+    
+            if (!string.IsNullOrEmpty(model))
+            {
+                vehicles = vehicles.Where(v => v.model.Contains(model, StringComparison.OrdinalIgnoreCase));
+            }
             return Ok(vehicles);
         }
 

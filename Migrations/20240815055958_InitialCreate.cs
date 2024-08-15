@@ -329,9 +329,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "192bd10d-587e-4620-9f4d-cb040c9c0374", null, "Owner", "OWNER" },
-                    { "49fb093d-e93b-4649-9b8e-3be97ea85700", null, "User", "USER" },
-                    { "cb3b9961-a243-4d1d-a171-8fcd06b1c77f", null, "Admin", "ADMIN" }
+                    { "656ea20c-2a83-4e8f-8c6f-13766bc2e8cf", null, "Owner", "OWNER" },
+                    { "6c380204-627b-436d-9b2b-a8e5a4f45ff7", null, "User", "USER" },
+                    { "7b7e77c5-1afa-4437-a955-661804ffca07", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
