@@ -42,4 +42,9 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _dbSet.Update(entity);
     }
+
+    public IQueryable<T> Query()
+    {
+        return _dbSet.AsQueryable();
+    }
 }

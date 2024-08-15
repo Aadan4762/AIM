@@ -8,4 +8,6 @@ public interface IRepository<T> where T : class
     Task AddAsync(T entity);
     void Remove(T entity);
     void Update(T entity);
+
+    IQueryable<T> Query();
 }

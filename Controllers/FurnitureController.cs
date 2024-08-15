@@ -1,7 +1,9 @@
+using System.Linq.Expressions;
 using AIM.Dtos.EntityDtos;
 using AIM.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIM.Controllers
 {
@@ -17,10 +19,49 @@ namespace AIM.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFurnitures()
+        public async Task<IActionResult> GetAllFurnitures(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string sortBy = "id",
+            [FromQuery] string sortOrder = "asc",
+            [FromQuery] string type = null,
+            [FromQuery] string status = null)
         {
-            var furnitures = await _unitOfWork.Furnitures.GetAllAsync();
-            return Ok(furnitures);
+            var query = _unitOfWork.Furnitures.Query();
+
+            // Apply filters
+            if (!string.IsNullOrEmpty(type))
+            {
+                query = query.Where(f => f.type.Contains(type, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(f => f.status.Contains(status, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Apply sorting
+            query = sortOrder.ToLower() == "desc"
+                ? query.OrderByDescending(GetSortExpression(sortBy))
+                : query.OrderBy(GetSortExpression(sortBy));
+
+            // Apply pagination
+            var totalCount = await query.CountAsync();
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Prepare response
+            var response = new
+            {
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Items = items
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -31,6 +72,7 @@ namespace AIM.Controllers
             {
                 return NotFound();
             }
+
             return Ok(furniture);
         }
 
@@ -106,6 +148,23 @@ namespace AIM.Controllers
             await _unitOfWork.CompleteAsync();
 
             return NoContent();
+        }
+
+        private static Expression<Func<Furniture, object>> GetSortExpression(string sortBy)
+        {
+            return sortBy.ToLower() switch
+            {
+                "type" => f => f.type,
+                "tag" => f => f.tag,
+                "material" => f => f.material,
+                "color" => f => f.color,
+                "dimension" => f => f.dimension,
+                "cost" => f => f.cost,
+                "status" => f => f.status,
+                "upload_image" => f => f.upload_image,
+                "date_recorded" => f => f.date_recorded,
+                _ => f => f.id
+            };
         }
     }
 }
