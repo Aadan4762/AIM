@@ -126,6 +126,29 @@ namespace AIM.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Lands",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    county = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    subCounty = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    location = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    titleDeed = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lands", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -329,9 +352,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "656ea20c-2a83-4e8f-8c6f-13766bc2e8cf", null, "Owner", "OWNER" },
-                    { "6c380204-627b-436d-9b2b-a8e5a4f45ff7", null, "User", "USER" },
-                    { "7b7e77c5-1afa-4437-a955-661804ffca07", null, "Admin", "ADMIN" }
+                    { "806c1d3e-e9b1-4922-87fb-aab3098b384f", null, "User", "USER" },
+                    { "8a11acc2-0f6e-4e04-90a2-8ded881a1dbe", null, "Admin", "ADMIN" },
+                    { "f137f8bc-ea90-4418-960f-5151d803f31e", null, "Owner", "OWNER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -395,6 +418,9 @@ namespace AIM.Migrations
 
             migrationBuilder.DropTable(
                 name: "Furnitures");
+
+            migrationBuilder.DropTable(
+                name: "Lands");
 
             migrationBuilder.DropTable(
                 name: "Users");

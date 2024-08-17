@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "1AqB9iGrdeyFFhcI+VL2NiJnDswDny7gT3546j7BzikICAUmUt0Isy2k5gkq0mYS3Z+zvQD2Q26HbI8Qr7Ldwg==",
+  "dgSpecHash": "p1L+LTRqf7GVYW3FaWSAK2jugvzHqw6VS6S/uBDp+ntt+naNTRXqJtiphEhqsl7lEeVpoTJXWDk805NlgT/SpA==",
   "success": true,
   "projectFilePath": "/home/adan/AIM/AIM.csproj",
   "expectedPackageFiles": [
-    "/home/adan/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/home/adan/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/home/adan/.nuget/packages/automapper.attributes/6.0.1/automapper.attributes.6.0.1.nupkg.sha512",
     "/home/adan/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/home/adan/.nuget/packages/bouncycastle.cryptography/2.3.1/bouncycastle.cryptography.2.3.1.nupkg.sha512",
@@ -24,7 +24,6 @@
     "/home/adan/.nuget/packages/microsoft.codeanalysis.csharp/4.5.0/microsoft.codeanalysis.csharp.4.5.0.nupkg.sha512",
     "/home/adan/.nuget/packages/microsoft.codeanalysis.csharp.workspaces/4.5.0/microsoft.codeanalysis.csharp.workspaces.4.5.0.nupkg.sha512",
     "/home/adan/.nuget/packages/microsoft.codeanalysis.workspaces.common/4.5.0/microsoft.codeanalysis.workspaces.common.4.5.0.nupkg.sha512",
-    "/home/adan/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/home/adan/.nuget/packages/microsoft.entityframeworkcore/8.0.7/microsoft.entityframeworkcore.8.0.7.nupkg.sha512",
     "/home/adan/.nuget/packages/microsoft.entityframeworkcore.abstractions/8.0.7/microsoft.entityframeworkcore.abstractions.8.0.7.nupkg.sha512",
     "/home/adan/.nuget/packages/microsoft.entityframeworkcore.analyzers/8.0.7/microsoft.entityframeworkcore.analyzers.8.0.7.nupkg.sha512",
@@ -96,5 +95,16 @@
     "/home/adan/.nuget/packages/system.windows.extensions/8.0.0/system.windows.extensions.8.0.0.nupkg.sha512",
     "/home/adan/.nuget/packages/zstdsharp.port/0.8.0/zstdsharp.port.0.8.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: AutoMapper.Extensions.Microsoft.DependencyInjection 12.0.1 requires AutoMapper (= 12.0.1) but version AutoMapper 13.0.1 was resolved.",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

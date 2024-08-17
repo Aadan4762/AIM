@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private Repository<User> _userRepository;
     private Repository<Vehicle> _vehicleRepository;
     private Repository<Department> _departmentRepository;
+    private Repository<Land> _landRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -39,6 +40,14 @@ public class UnitOfWork : IUnitOfWork
         {
             return _vehicleRepository ??= new Repository<Vehicle>(_context);
 
+        }
+    }
+
+    public IRepository<Land> Lands
+    {
+        get
+        {
+            return _landRepository ??= new Repository<Land>(_context);
         }
     }
 

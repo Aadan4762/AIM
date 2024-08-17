@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240815055958_InitialCreate")]
+    [Migration("20240817074331_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -173,6 +173,39 @@ namespace AIM.Migrations
                     b.ToTable("Furnitures");
                 });
 
+            modelBuilder.Entity("AIM.Models.Entities.Land", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("county")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("location")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("subCounty")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("titleDeed")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Lands");
+                });
+
             modelBuilder.Entity("AIM.Models.Entities.User", b =>
                 {
                     b.Property<int>("id")
@@ -321,19 +354,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6c380204-627b-436d-9b2b-a8e5a4f45ff7",
+                            Id = "806c1d3e-e9b1-4922-87fb-aab3098b384f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "7b7e77c5-1afa-4437-a955-661804ffca07",
+                            Id = "8a11acc2-0f6e-4e04-90a2-8ded881a1dbe",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "656ea20c-2a83-4e8f-8c6f-13766bc2e8cf",
+                            Id = "f137f8bc-ea90-4418-960f-5151d803f31e",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
