@@ -211,6 +211,9 @@ namespace AIM.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -244,6 +247,8 @@ namespace AIM.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Users");
                 });
@@ -351,19 +356,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806c1d3e-e9b1-4922-87fb-aab3098b384f",
+                            Id = "bf53f49b-7d0f-4f2a-b69d-dbe8cbf77158",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "8a11acc2-0f6e-4e04-90a2-8ded881a1dbe",
+                            Id = "176019ce-f86a-4a02-8db2-361530aad0b9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f137f8bc-ea90-4418-960f-5151d803f31e",
+                            Id = "a0bc81b8-ec5d-4f6b-b401-fef80a1590de",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
@@ -473,6 +478,17 @@ namespace AIM.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AIM.Models.Entities.User", b =>
+                {
+                    b.HasOne("AIM.Models.Entities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

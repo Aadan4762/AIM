@@ -65,6 +65,13 @@ namespace AIM.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Check if the department exists
+            var department = await _unitOfWork.Departments.GetByIdAsync(userDto.DepartmentId);
+            if (department == null)
+            {
+                return BadRequest("Invalid Department ID");
+            }
+
             // Map UserDto to User entity
             var user = new User 
             {
@@ -75,7 +82,8 @@ namespace AIM.Controllers
                 phone = userDto.phone,
                 role = userDto.role,
                 password = userDto.password,
-                user_image = userDto.user_image
+                user_image = userDto.user_image,
+                DepartmentId = userDto.DepartmentId
             };
 
             await _unitOfWork.Users.AddAsync(user);
@@ -92,10 +100,17 @@ namespace AIM.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingUser  = await _unitOfWork.Users.GetByIdAsync(id);
+            var existingUser = await _unitOfWork.Users.GetByIdAsync(id);
             if (existingUser == null)
             {
                 return NotFound();
+            }
+
+            // Check if the department exists
+            var department = await _unitOfWork.Departments.GetByIdAsync(userDto.DepartmentId);
+            if (department == null)
+            {
+                return BadRequest("Invalid Department ID");
             }
 
             // Map UserDto to existing User entity
@@ -107,12 +122,14 @@ namespace AIM.Controllers
             existingUser.role = userDto.role;
             existingUser.password = userDto.password; // Ensure to hash the password in production
             existingUser.user_image = userDto.user_image;
+            existingUser.DepartmentId = userDto.DepartmentId;
 
             // Update the existing user in the database
             _unitOfWork.Users.Update(existingUser);
             await _unitOfWork.CompleteAsync();
 
             return NoContent();
+        
         }
 
         [HttpDelete("{id}")]

@@ -10,4 +10,7 @@ public class UserDto
     public string role { get; set; }
     public string password { get; set; }
     public string user_image { get; set; }
+    
+    // New property for DepartmentId
+    public int DepartmentId { get; set; }
 }

@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using AIM.Dtos.EntityDtos;
 using AIM.Models.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIM.Controllers
