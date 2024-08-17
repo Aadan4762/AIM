@@ -1,7 +1,9 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using AIM.Dtos.EntityDtos;
 using AIM.Models.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIM.Controllers
 {
@@ -10,13 +12,12 @@ namespace AIM.Controllers
    public class LandController : ControllerBase
    {
       private readonly IUnitOfWork _unitOfWork;
-
-
       public LandController(IUnitOfWork unitOfWork)
       {
          _unitOfWork = unitOfWork;
       }
 
+      
       [HttpPost]
       public async Task<IActionResult> CreateLand(LandDto landDto)
       {
@@ -45,11 +46,68 @@ namespace AIM.Controllers
 
 
       [HttpGet]
-      public async Task<IActionResult> GetAllLands()
+      public async Task<IActionResult> GetAllLands(
+         [FromQuery] int pageNumber = 1,
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string sortBy = "id",
+         [FromQuery] string sortOrder = "asc",
+         [FromQuery] string type = null,
+         [FromQuery] string status = null
+         )
       {
-         var lands = await _unitOfWork.Lands.GetAllAsync();
-         return Ok(lands);
+         var query = _unitOfWork.Lands.Query();
+
+         // Apply filters
+         if (!string.IsNullOrEmpty(type))
+         {
+            query = query.Where(f => f.name.Contains(type, StringComparison.OrdinalIgnoreCase));
+         }
+
+         if (!string.IsNullOrEmpty(status))
+         {
+            query = query.Where(f => f.titleDeed.Contains(status, StringComparison.OrdinalIgnoreCase));
+         }
+
+         // Apply sorting
+         query = sortOrder.ToLower() == "desc"
+            ? query.OrderByDescending(GetSortExpression(sortBy))
+            : query.OrderBy(GetSortExpression(sortBy));
+
+         // Apply pagination
+         var totalCount = await query.CountAsync();
+         var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+         // Prepare response
+         var response = new
+         {
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            Items = items
+         };
+
+         return Ok(response);
       }
+      
+      private static Expression<Func<Land, object>> GetSortExpression(string sortBy)
+      {
+         return sortBy.ToLower() switch
+         {
+            "name" => f => f.name,
+            "county" => f => f.county,
+            "subCounty" => f => f.subCounty,
+            "location" => f => f.location,
+            "titleDeed" => f => f.titleDeed,
+            _ => f => f.id
+         };
+      }
+      
+      
+      
+      
 
       [HttpGet("{id}")]
 
