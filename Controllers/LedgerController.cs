@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using AIM.Dtos.EntityDtos;
 using AIM.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DefaultNamespace;
 
@@ -24,6 +26,7 @@ public class LedgerController : Controller
       {
          return BadRequest(ModelState);
       }
+
       // Validate capacity
       if (ledgerDto.capacity != "requisition" && ledgerDto.capacity != "supplier")
       {
@@ -37,7 +40,7 @@ public class LedgerController : Controller
          return NotFound($"Department with name '{ledgerDto.departmentName}' does not exist.");
       }
 
-      var ledger = new Ledger 
+      var ledger = new Ledger
       {
          voucherNumber = ledgerDto.voucherNumber,
          cardNumber = ledgerDto.cardNumber,
@@ -62,13 +65,53 @@ public class LedgerController : Controller
 
       return CreatedAtAction(nameof(GetAllLedger), new { id = ledger.id }, ledger);
    }
-   
+
 
    [HttpGet]
-   public async Task<IActionResult> GetAllLedger()
+   public async Task<IActionResult> GetAllLedger(
+      [FromQuery] int pageNumber = 1,
+      [FromQuery] int pageSize = 10,
+      [FromQuery] string sortBy = "id",
+      [FromQuery] string sortOrder = "asc",
+      [FromQuery] string voucherNumber = null,
+      [FromQuery] string cardNumber = null)
+
    {
-      var ledgers = await _unitOfWork.Ledgers.GetAllAsync();
-      return Ok(ledgers);
+      var query = _unitOfWork.Ledgers.Query();
+
+      // Apply filters
+      if (!string.IsNullOrEmpty(voucherNumber))
+      {
+         query = query.Where(f => f.voucherNumber.Contains(voucherNumber, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(cardNumber))
+      {
+         query = query.Where(f => f.cardNumber.Contains(cardNumber, StringComparison.OrdinalIgnoreCase));
+      }
+
+      // Apply sorting
+      query = sortOrder.ToLower() == "desc"
+         ? query.OrderByDescending(GetSortExpression(sortBy))
+         : query.OrderBy(GetSortExpression(sortBy));
+
+      // Apply pagination
+      var totalCount = await query.CountAsync();
+      var items = await query
+         .Skip((pageNumber - 1) * pageSize)
+         .Take(pageSize)
+         .ToListAsync();
+
+      // Prepare response
+      var response = new
+      {
+         TotalCount = totalCount,
+         PageNumber = pageNumber,
+         PageSize = pageSize,
+         Items = items
+      };
+
+      return Ok(response);
    }
 
    [HttpGet("{id}")]
@@ -80,6 +123,7 @@ public class LedgerController : Controller
       {
          return NotFound();
       }
+
       return Ok(ledger);
    }
 
@@ -96,6 +140,7 @@ public class LedgerController : Controller
       {
          return NotFound();
       }
+
       // Map Dto to Entity
       existingLedger.voucherNumber = ledgerDto.voucherNumber;
       existingLedger.cardNumber = ledgerDto.cardNumber;
@@ -119,7 +164,7 @@ public class LedgerController : Controller
       return NoContent();
    }
 
-   
+
    [HttpDelete("{id}")]
 
    public async Task<IActionResult> DeleteLedgerById(int id)
@@ -130,8 +175,36 @@ public class LedgerController : Controller
          return NotFound();
 
       }
+
       _unitOfWork.Ledgers.Remove(ledger);
       await _unitOfWork.CompleteAsync();
       return NoContent();
    }
+
+   private static Expression<Func<Ledger, object>> GetSortExpression(string sortBy)
+   {
+      return sortBy.ToLower() switch
+      {
+         "vouchernumber" => f => f.voucherNumber,
+         "cardnumber" => f => f.cardNumber,
+         "qtyreceipt" => f => f.qtyReceipt,
+         "invoiceunitpricereceipt" => f => f.invoiceUnitPriceReceipt,
+         "valuereceipt" => f => f.valueReceipt,
+         "qtyissues" => f => f.qtyIssues,
+         "averageunitpriceissue" => f => f.averageUnitPriceIssue,
+         "valueissues" => f => f.valueIssues,
+         "qtybalances" => f => f.qtyBalances,
+         "valuebalances" => f => f.valueBalances,
+         "itemcodenumber" => f => f.itemCodeNumber,
+         "description" => f => f.description,
+         "ministry" => f => f.ministry,
+         "unitofissue" => f => f.unitOfIssue,
+         "location" => f => f.location,
+         "capacity" => f => f.capacity,
+         "departmentname" => f => f.departmentName,
+         "daterecorded" => f => f.dateRecorded,
+         _ => f => f.id
+      };
+   }
+
 }
