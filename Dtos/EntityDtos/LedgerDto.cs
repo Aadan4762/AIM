@@ -11,7 +11,7 @@ public class LedgerDto
     public int qtyIssues { get; set; }
     public int averageUnitPriceIssue { get; set; }
     public int valueIssues { get; set; }
-    public int qtyBalances { get; set; }
+    public int qtyBalances { get; set;  }
     public int valueBalances { get; set; }
     public string itemCodeNumber { get; set; }
     public string description { get; set; }
@@ -19,4 +19,5 @@ public class LedgerDto
     public string unitOfIssue { get; set; }
     public string location { get; set; }
     public string capacity { get; set; }
+    public string departmentName { get; set; }
 }

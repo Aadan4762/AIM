@@ -21,5 +21,5 @@ public class Ledger
    public string unitOfIssue { get; set; }
    public string location { get; set; }
    public string capacity { get; set; }
-   
+   public string departmentName { get; set; }
 }

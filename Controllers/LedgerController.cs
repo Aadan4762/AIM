@@ -18,12 +18,23 @@ public class LedgerController : Controller
    }
 
    [HttpPost]
-   public async Task<IActionResult> CreateDepartment(LedgerDto ledgerDto)
+   public async Task<IActionResult> CreateLedger(LedgerDto ledgerDto)
    {
       if (!ModelState.IsValid)
       {
          return BadRequest(ModelState);
+      }
+      // Validate capacity
+      if (ledgerDto.capacity != "requisition" && ledgerDto.capacity != "supplier")
+      {
+         return BadRequest("Invalid capacity. Only 'requisition' or 'supplier' are allowed.");
+      }
 
+      // Check if the department exists
+      var department = await _unitOfWork.Departments.GetAllAsync();
+      if (department == null || !department.Any(d => d.name == ledgerDto.departmentName))
+      {
+         return NotFound($"Department with name '{ledgerDto.departmentName}' does not exist.");
       }
 
       var ledger = new Ledger 
@@ -43,15 +54,14 @@ public class LedgerController : Controller
          ministry = ledgerDto.ministry,
          unitOfIssue = ledgerDto.unitOfIssue,
          location = ledgerDto.location,
-         capacity = ledgerDto.capacity
+         capacity = ledgerDto.capacity,
+         departmentName = ledgerDto.departmentName
       };
       await _unitOfWork.Ledgers.AddAsync(ledger);
       await _unitOfWork.CompleteAsync();
 
       return CreatedAtAction(nameof(GetAllLedger), new { id = ledger.id }, ledger);
    }
-   
-   
    
 
    [HttpGet]

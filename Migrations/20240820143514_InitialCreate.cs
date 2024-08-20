@@ -178,6 +178,8 @@ namespace AIM.Migrations
                     location = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     capacity = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    departmentName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -397,9 +399,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4a2f2b72-c08b-4928-91c2-e45a53694952", null, "Owner", "OWNER" },
-                    { "701da270-dc67-45e2-8e9a-cfa2f45ba28c", null, "Admin", "ADMIN" },
-                    { "a51e3d29-4a14-4624-8c10-94549ffabcbd", null, "User", "USER" }
+                    { "14ad4c9c-9615-4853-9ff5-485a73dfd4e5", null, "User", "USER" },
+                    { "b214813c-29cf-4e43-a039-9dbb00bb92ea", null, "Admin", "ADMIN" },
+                    { "da8d83e8-f513-446b-8658-53e0a0459131", null, "Owner", "OWNER" }
                 });
 
             migrationBuilder.CreateIndex(

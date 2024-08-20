@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820130534_InitialCreate")]
+    [Migration("20240820143514_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -228,6 +228,10 @@ namespace AIM.Migrations
                     b.Property<DateTime>("dateRecorded")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("departmentName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -431,19 +435,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a51e3d29-4a14-4624-8c10-94549ffabcbd",
+                            Id = "14ad4c9c-9615-4853-9ff5-485a73dfd4e5",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "701da270-dc67-45e2-8e9a-cfa2f45ba28c",
+                            Id = "b214813c-29cf-4e43-a039-9dbb00bb92ea",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4a2f2b72-c08b-4928-91c2-e45a53694952",
+                            Id = "da8d83e8-f513-446b-8658-53e0a0459131",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
