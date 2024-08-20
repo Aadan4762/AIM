@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     private Repository<Vehicle> _vehicleRepository;
     private Repository<Department> _departmentRepository;
     private Repository<Land> _landRepository;
+    private Repository<Ledger> _ledgerRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -24,6 +25,8 @@ public class UnitOfWork : IUnitOfWork
             return _furnitureRepository ??= new Repository<Furniture>(_context);
         }
     }
+
+   
 
     public IRepository<User> Users 
     {
@@ -48,6 +51,14 @@ public class UnitOfWork : IUnitOfWork
         get
         {
             return _landRepository ??= new Repository<Land>(_context);
+        }
+    }
+
+    public IRepository<Ledger> Ledgers
+    {
+        get
+        {
+            return _ledgerRepository ??= new Repository<Ledger>(_context);
         }
     }
 

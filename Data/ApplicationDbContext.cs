@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Land> Lands { get; set; }
+    public DbSet<Ledger> Ledgers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

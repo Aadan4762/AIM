@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240817191041_InitialCreate")]
+    [Migration("20240820130534_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -206,6 +206,78 @@ namespace AIM.Migrations
                     b.ToTable("Lands");
                 });
 
+            modelBuilder.Entity("AIM.Models.Entities.Ledger", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("averageUnitPriceIssue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("capacity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("cardNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("dateRecorded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("invoiceUnitPriceReceipt")
+                        .HasColumnType("int");
+
+                    b.Property<string>("itemCodeNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("location")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ministry")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("qtyBalances")
+                        .HasColumnType("int");
+
+                    b.Property<int>("qtyIssues")
+                        .HasColumnType("int");
+
+                    b.Property<int>("qtyReceipt")
+                        .HasColumnType("int");
+
+                    b.Property<string>("unitOfIssue")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("valueBalances")
+                        .HasColumnType("int");
+
+                    b.Property<int>("valueIssues")
+                        .HasColumnType("int");
+
+                    b.Property<int>("valueReceipt")
+                        .HasColumnType("int");
+
+                    b.Property<string>("voucherNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Ledgers");
+                });
+
             modelBuilder.Entity("AIM.Models.Entities.User", b =>
                 {
                     b.Property<int>("id")
@@ -359,19 +431,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bf53f49b-7d0f-4f2a-b69d-dbe8cbf77158",
+                            Id = "a51e3d29-4a14-4624-8c10-94549ffabcbd",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "176019ce-f86a-4a02-8db2-361530aad0b9",
+                            Id = "701da270-dc67-45e2-8e9a-cfa2f45ba28c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0bc81b8-ec5d-4f6b-b401-fef80a1590de",
+                            Id = "4a2f2b72-c08b-4928-91c2-e45a53694952",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });

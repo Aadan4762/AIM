@@ -149,6 +149,44 @@ namespace AIM.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Ledgers",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    dateRecorded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    voucherNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    cardNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    qtyReceipt = table.Column<int>(type: "int", nullable: false),
+                    invoiceUnitPriceReceipt = table.Column<int>(type: "int", nullable: false),
+                    valueReceipt = table.Column<int>(type: "int", nullable: false),
+                    qtyIssues = table.Column<int>(type: "int", nullable: false),
+                    averageUnitPriceIssue = table.Column<int>(type: "int", nullable: false),
+                    valueIssues = table.Column<int>(type: "int", nullable: false),
+                    qtyBalances = table.Column<int>(type: "int", nullable: false),
+                    valueBalances = table.Column<int>(type: "int", nullable: false),
+                    itemCodeNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ministry = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    unitOfIssue = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    location = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    capacity = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ledgers", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Vehicles",
                 columns: table => new
                 {
@@ -359,9 +397,9 @@ namespace AIM.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "176019ce-f86a-4a02-8db2-361530aad0b9", null, "Admin", "ADMIN" },
-                    { "a0bc81b8-ec5d-4f6b-b401-fef80a1590de", null, "Owner", "OWNER" },
-                    { "bf53f49b-7d0f-4f2a-b69d-dbe8cbf77158", null, "User", "USER" }
+                    { "4a2f2b72-c08b-4928-91c2-e45a53694952", null, "Owner", "OWNER" },
+                    { "701da270-dc67-45e2-8e9a-cfa2f45ba28c", null, "Admin", "ADMIN" },
+                    { "a51e3d29-4a14-4624-8c10-94549ffabcbd", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -430,6 +468,9 @@ namespace AIM.Migrations
 
             migrationBuilder.DropTable(
                 name: "Lands");
+
+            migrationBuilder.DropTable(
+                name: "Ledgers");
 
             migrationBuilder.DropTable(
                 name: "Users");
