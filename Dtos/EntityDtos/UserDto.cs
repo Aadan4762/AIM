@@ -9,5 +9,6 @@ public class UserDto
     public string phone { get; set; }
     public string role { get; set; }
     public string password { get; set; }
+    public int DepartmentId { get; set; } // Add DepartmentId property
  
 }

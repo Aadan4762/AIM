@@ -131,6 +131,9 @@ namespace AIM.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -160,6 +163,8 @@ namespace AIM.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Users");
                 });
@@ -192,19 +197,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5d7a4f25-67ba-4118-9ca0-2fb217fa7c44",
+                            Id = "96a57643-2909-4437-8705-c0aaa21a0aee",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "15a131c0-116f-4528-ab85-def7f645d1c6",
+                            Id = "209ae220-f113-458d-91f8-95b7ea1078f5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c5541d52-5a8e-4bc7-901d-da93ea75a502",
+                            Id = "6fb8d42a-24be-4c48-a92d-749ce89ebfb3",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
@@ -316,6 +321,17 @@ namespace AIM.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AIM.Models.Entities.User", b =>
+                {
+                    b.HasOne("AIM.Models.Entities.Department", "Department")
+                        .WithMany("Users")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -365,6 +381,11 @@ namespace AIM.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AIM.Models.Entities.Department", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

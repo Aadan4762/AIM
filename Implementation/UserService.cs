@@ -1,19 +1,19 @@
 using AIM.Dtos.EntityDtos;
 using AIM.Interface;
 using AIM.Models.Entities;
-
 namespace AIM.Implementation
 {
     public class UserService : IUserService
     {
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Department> _departmentRepository; // Add repository for Department
 
-        public UserService(IRepository<User> userRepository)
-        
+        public UserService(IRepository<User> userRepository, IRepository<Department> departmentRepository)
         {
             _userRepository = userRepository;
+            _departmentRepository = departmentRepository;
         }
-        
+
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
@@ -29,6 +29,7 @@ namespace AIM.Implementation
                 phone = user.phone,
                 role = user.role,
                 password = user.password, // Consider not exposing the password in DTO
+                DepartmentId = user.DepartmentId
             };
         }
 
@@ -44,11 +45,17 @@ namespace AIM.Implementation
                 phone = user.phone,
                 role = user.role,
                 password = user.password, // Consider whether this should be included
+                DepartmentId = user.DepartmentId
             }).ToList();
         }
 
         public async Task AddUserAsync(UserDto userDto)
         {
+            // Check if the department exists
+            var department = await _departmentRepository.GetByIdAsync(userDto.DepartmentId);
+            if (department == null)
+                throw new Exception("Department not found");
+
             var user = new User()
             {
                 first_name = userDto.first_name,
@@ -58,6 +65,7 @@ namespace AIM.Implementation
                 phone = userDto.phone,
                 role = userDto.role,
                 password = userDto.password, // Ensure password is hashed before storing
+                DepartmentId = userDto.DepartmentId
             };
 
             await _userRepository.AddAsync(user);
@@ -75,6 +83,7 @@ namespace AIM.Implementation
             user.email = userDto.email;
             user.phone = userDto.phone;
             user.role = userDto.role;
+            user.DepartmentId = userDto.DepartmentId;
 
             if (!string.IsNullOrEmpty(userDto.password))
             {
@@ -87,7 +96,6 @@ namespace AIM.Implementation
         {
             throw new NotImplementedException();
         }
-
 
         public async Task DeleteUserAsync(int id)
         {

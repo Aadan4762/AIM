@@ -11,4 +11,8 @@ public class User
     public string role { get; set; }
     public string password { get; set; }
     
+    // Foreign Key for Department
+    public int DepartmentId { get; set; }
+    public Department Department { get; set; }
+    
 }

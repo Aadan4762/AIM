@@ -2,7 +2,6 @@ using AIM.Dtos.EntityDtos;
 using Microsoft.AspNetCore.Mvc;
 using AIM.Interface;
 
-
 namespace AIM.Controllers
 {
     [Route("api/[controller]")]
@@ -41,8 +40,15 @@ namespace AIM.Controllers
         [HttpPost]
         public async Task<ActionResult> AddUser([FromBody] UserDto userDto)
         {
-            await _userService.AddUserAsync(userDto);
-            return Ok(new { message = "User added successfully.", data = userDto });
+            try
+            {
+                await _userService.AddUserAsync(userDto);
+                return Ok(new { message = "User added successfully.", data = userDto });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "An error occurred while adding the user.", error = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
