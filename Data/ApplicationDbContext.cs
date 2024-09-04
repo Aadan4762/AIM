@@ -12,13 +12,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
     
     public DbSet<ApplicationUser> Registers { get; set; }
-    public DbSet<Furniture> Furnitures { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Vehicle> Vehicles { get; set; }
-    public DbSet<Department> Departments { get; set; }
-    public DbSet<Land> Lands { get; set; }
-    public DbSet<Ledger> Ledgers { get; set; }
-
+    public DbSet<Department>Departments { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

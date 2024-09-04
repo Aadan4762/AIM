@@ -10,8 +10,5 @@ public class User
     public string phone { get; set; }
     public string role { get; set; }
     public string password { get; set; }
-    public string user_image { get; set; }
-    // New properties for Department
-    public int DepartmentId { get; set; }
-    public Department Department { get; set; }
+    
 }

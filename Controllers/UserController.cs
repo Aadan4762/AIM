@@ -1,8 +1,7 @@
 using AIM.Dtos.EntityDtos;
-using AIM.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
+using AIM.Interface;
+
 
 namespace AIM.Controllers
 {
@@ -10,141 +9,76 @@ namespace AIM.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
-        public UserController(IUnitOfWork unitOfWork)
+        public UserController(IUserService userService)
         {
-            _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers(
-            [FromQuery] string email = null,
-            [FromQuery] string employeeNo = null,
-            [FromQuery] string phone = null)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
-            var usersQuery = _unitOfWork.Users.GetAllAsync();
-
-            var users = await usersQuery;
-
-            // Apply filtering
-            if (!string.IsNullOrEmpty(email))
+            var users = await _userService.GetAllUsersAsync();
+            if (users == null || !users.Any())
             {
-                users = users.Where(u => u.email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
+                return NotFound("No users found.");
             }
-            
-            if (!string.IsNullOrEmpty(employeeNo))
-            {
-                users = users.Where(u => u.employee_no.Equals(employeeNo, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-            
-            if (!string.IsNullOrEmpty(phone))
-            {
-                users = users.Where(u => u.phone.Equals(phone, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            return Ok(users);
+            return Ok(new { message = "Users retrieved successfully.", data = users });
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound($"User with ID {id} not found.");
             }
-            return Ok(user);
+            return Ok(new { message = $"User with ID {id} retrieved successfully.", data = user });
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserDto userDto)
+        public async Task<ActionResult> AddUser([FromBody] UserDto userDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Check if the department exists
-            var department = await _unitOfWork.Departments.GetByIdAsync(userDto.DepartmentId);
-            if (department == null)
-            {
-                return BadRequest("Invalid Department ID");
-            }
-
-            // Map UserDto to User entity
-            var user = new User 
-            {
-                first_name = userDto.first_name,
-                last_name = userDto.last_name,
-                employee_no = userDto.employee_no,
-                email = userDto.email,
-                phone = userDto.phone,
-                role = userDto.role,
-                password = userDto.password,
-                user_image = userDto.user_image,
-                DepartmentId = userDto.DepartmentId
-            };
-
-            await _unitOfWork.Users.AddAsync(user);
-            await _unitOfWork.CompleteAsync();
-
-            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+            await _userService.AddUserAsync(userDto);
+            return Ok(new { message = "User added successfully.", data = userDto });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserById(int id, UserDto userDto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                await _userService.UpdateUserAsync(id, userDto);
+                return Ok(new { message = $"User with ID {id} updated successfully." });
             }
-
-            var existingUser = await _unitOfWork.Users.GetByIdAsync(id);
-            if (existingUser == null)
+            catch (KeyNotFoundException)
             {
-                return NotFound();
+                return NotFound($"User with ID {id} not found.");
             }
-
-            // Check if the department exists
-            var department = await _unitOfWork.Departments.GetByIdAsync(userDto.DepartmentId);
-            if (department == null)
+            catch (Exception ex)
             {
-                return BadRequest("Invalid Department ID");
+                return StatusCode(500, new { message = "An error occurred while updating the user.", error = ex.Message });
             }
-
-            // Map UserDto to existing User entity
-            existingUser.first_name = userDto.first_name;
-            existingUser.last_name = userDto.last_name;
-            existingUser.employee_no = userDto.employee_no;
-            existingUser.email = userDto.email;
-            existingUser.phone = userDto.phone;
-            existingUser.role = userDto.role;
-            existingUser.password = userDto.password; // Ensure to hash the password in production
-            existingUser.user_image = userDto.user_image;
-            existingUser.DepartmentId = userDto.DepartmentId;
-
-            // Update the existing user in the database
-            _unitOfWork.Users.Update(existingUser);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
-        
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                await _userService.DeleteUserAsync(id);
+                return Ok(new { message = $"User with ID {id} deleted successfully." });
             }
-
-            _unitOfWork.Users.Remove(user);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"User with ID {id} not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the user.", error = ex.Message });
+            }
         }
     }
 }

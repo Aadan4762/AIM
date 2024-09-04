@@ -123,162 +123,6 @@ namespace AIM.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("AIM.Models.Entities.Furniture", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("color")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("cost")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("date_recorded")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("dimension")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("material")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("tag")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("upload_image")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Furnitures");
-                });
-
-            modelBuilder.Entity("AIM.Models.Entities.Land", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("county")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("location")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("subCounty")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("titleDeed")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Lands");
-                });
-
-            modelBuilder.Entity("AIM.Models.Entities.Ledger", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("averageUnitPriceIssue")
-                        .HasColumnType("int");
-
-                    b.Property<string>("capacity")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("cardNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("dateRecorded")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("departmentName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("invoiceUnitPriceReceipt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("itemCodeNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("location")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ministry")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("qtyBalances")
-                        .HasColumnType("int");
-
-                    b.Property<int>("qtyIssues")
-                        .HasColumnType("int");
-
-                    b.Property<int>("qtyReceipt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("unitOfIssue")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("valueBalances")
-                        .HasColumnType("int");
-
-                    b.Property<int>("valueIssues")
-                        .HasColumnType("int");
-
-                    b.Property<int>("valueReceipt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("voucherNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Ledgers");
-                });
-
             modelBuilder.Entity("AIM.Models.Entities.User", b =>
                 {
                     b.Property<int>("id")
@@ -286,9 +130,6 @@ namespace AIM.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -318,90 +159,9 @@ namespace AIM.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("user_image")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.HasKey("id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("AIM.Models.Entities.Vehicle", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("body")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("color")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("date_recorded")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("drive_train")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("engine_type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("fuel_type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("insuarance")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("make")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("model")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("number_plate")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
-                    b.Property<string>("sitting_capacity")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("vin")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("warranty")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("year")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -432,19 +192,19 @@ namespace AIM.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f9b7fcb7-a13f-4c4a-abaa-6115f5f34fa5",
+                            Id = "5d7a4f25-67ba-4118-9ca0-2fb217fa7c44",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "8b61e9ee-86ba-42ca-a000-63044c08352e",
+                            Id = "15a131c0-116f-4528-ab85-def7f645d1c6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cac6c905-5cc5-4169-85ff-067cd31e08ee",
+                            Id = "c5541d52-5a8e-4bc7-901d-da93ea75a502",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         });
@@ -554,17 +314,6 @@ namespace AIM.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("AIM.Models.Entities.User", b =>
-                {
-                    b.HasOne("AIM.Models.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

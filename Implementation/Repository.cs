@@ -4,7 +4,7 @@ using AIM.Data;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    protected readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
 
     public Repository(ApplicationDbContext context)
@@ -22,29 +22,25 @@ public class Repository<T> : IRepository<T> where T : class
     {
         return await _dbSet.ToListAsync();
     }
-
-    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
-    {
-        return await _dbSet.Where(predicate).ToListAsync();
-    }
+    
 
     public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public void Remove(T entity)
-    {
-        _dbSet.Remove(entity);
-    }
-
-    public void Update(T entity)
+    public async Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public IQueryable<T> Query()
+    public async Task DeleteAsync(int id)
     {
-        return _dbSet.AsQueryable();
+        var entity = await GetByIdAsync(id);
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
     }
+    
 }
