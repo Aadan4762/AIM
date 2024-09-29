@@ -7,6 +7,7 @@ namespace AIM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -15,6 +16,13 @@ namespace AIM.Controllers
         {
             _departmentService = departmentService;
         }
+
+        [HttpGet("health")]
+        public ActionResult<string> HealthCheck()
+        {
+            return "API is running";
+        }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartmentDto>>> GetAllDepartments()
